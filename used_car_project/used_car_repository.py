@@ -17,13 +17,14 @@ class UsedCarRepository(BaseRepository):
         '''
         self.execute_query(query, (make, model, year, price, description, agent_id, seller_id))
 
-    def update_car(self, car_id, make, model, year, price, description):
+    def update_car(self, car_id, make, model, year, price, description, seller_id):
         query = '''
             UPDATE used_cars 
-            SET make = ?, model = ?, year = ?, price = ?, description = ? 
+            SET make = ?, model = ?, year = ?, price = ?, description = ?, seller_id = ? 
             WHERE car_id = ?
         '''
-        self.execute_query(query, (make, model, year, price, description, car_id))
+        self.execute_query(query, (make, model, year, price, description, seller_id, car_id))
+
 
     def delete_car(self, car_id):
         query = 'DELETE FROM used_cars WHERE car_id = ?'

@@ -29,7 +29,14 @@
         }
         input[type="text"],
         select {
-            width: 95%;
+            width: 95.5%;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        select {
+            width: 100%;
             padding: 8px;
             margin: 8px 0;
             border-radius: 5px;
@@ -58,7 +65,6 @@
     </style>
 </head>
 <body>
-    <h1>Edit Profile</h1>
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
@@ -69,6 +75,8 @@
             </div>
         {% endif %}
     {% endwith %}
+    <h1>Edit Profile</h1>
+    
     <form method="post">
         <label>Role:</label>
         <input type="text" name="role" value="{{ profile['role'] }}" required>

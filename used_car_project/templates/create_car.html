@@ -31,11 +31,17 @@
         }
         input[type="text"],
         input[type="number"],
-        textarea {
+        textarea{
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             width: 97%;
+        }
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
         }
         input[type="submit"] {
             padding: 10px;
@@ -63,6 +69,15 @@
 </head>
 <body>
     <div class="container">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
         <h1>Create Car Listing</h1>
         <form method="post">
             <label for="make">Make:</label>
@@ -78,7 +93,12 @@
             <input type="number" name="price" step="0.01" required>
 
             <label for="seller_id">Seller:</label>
-            <input type="text" name="seller_id" required>
+            <select name="seller_id" required>
+                <option value="" disabled selected>Select a seller</option>
+                {% for seller in sellers %}
+                    <option value="{{ seller['id'] }}">{{ seller['name'] }}</option>
+                {% endfor %}
+            </select>
 
             <label for="description">Description:</label>
             <textarea name="description" rows="4" placeholder="Optional details..."></textarea>

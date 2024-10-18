@@ -67,7 +67,6 @@
     </style>
 </head>
 <body>
-    <h1>Edit User Account</h1>
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
@@ -78,9 +77,10 @@
             </div>
         {% endif %}
     {% endwith %}
+    <h1>Edit User Account</h1>
     <form method="post">
         <label for="id">Username:</label>
-        <input type="text" name="id" value="{{ account['id'] }}" readonly required>
+        <input type="text" name="id" value="{{ account['id'] }}" required>
         
         <label for="name">Name:</label>
         <input type="text" name="name" value="{{ account['name'] }}" required>

@@ -106,27 +106,37 @@ def create_account():
 @app.route('/accounts/<string:id>/edit', methods=('GET', 'POST'))
 @admin_required
 def update_account(id):
-    account = user_repo.get_account_by_id(id)
+    account = user_repo.get_account_by_id(id)  # Fetch existing account
     profiles = user_repo.fetch_all('SELECT * FROM user_profiles WHERE status = "active"')
 
     if request.method == 'POST':
         try:
-            # Check if the email already belongs to another user
+            # Get the new ID and email from the form
+            new_id = request.form['id']
             new_email = request.form['email']
-            existing_user = user_repo.get_account_by_email(new_email)
 
-            if existing_user and existing_user['id'] != id:
+            # Check if the new ID is taken by another user (not the current one)
+            if new_id != id:
+                existing_user_with_id = user_repo.get_account_by_id(new_id)
+                if existing_user_with_id:
+                    flash('Username already exists for another user. Please choose a different one.', 'error')
+                    return render_template('edit_account.html', account=account, profiles=profiles)
+
+            # Check if the email belongs to another user (not the current one)
+            existing_user_with_email = user_repo.get_account_by_email(new_email)
+            if existing_user_with_email and existing_user_with_email['id'] != id:
                 flash('Email already exists for another user. Please use a different one.', 'error')
                 return render_template('edit_account.html', account=account, profiles=profiles)
 
-            # Update the account
+            # Perform the update
             user_repo.update_account(
-                id=id,
+                id=new_id,
                 name=request.form['name'],
                 password=request.form['password'],
                 email=new_email,
                 profile_id=request.form['profile_id'],
-                status=request.form['status']
+                status=request.form['status'],
+                old_id=id  # Pass the old ID for WHERE clause
             )
             flash('User account updated successfully!', 'success')
             return redirect(url_for('view_accounts'))
@@ -135,6 +145,8 @@ def update_account(id):
             flash(f'Error: {str(e)}', 'error')
 
     return render_template('edit_account.html', account=account, profiles=profiles)
+
+
 
 
 # Suspend a user account
@@ -249,6 +261,7 @@ def view_cars():
 @app.route('/cars/new', methods=('GET', 'POST'))
 @agent_required
 def create_car():
+    sellers = user_repo.get_active_sellers()
     if request.method == 'POST':
         make = request.form['make']
         model = request.form['model']
@@ -258,17 +271,24 @@ def create_car():
         agent_id = request.form['agent_id']
         seller_id = request.form['seller_id']
 
+        try:
+            car_repo.create_car(make, model, year, price, description, agent_id, seller_id)
+            flash('Car listing created successfully!', 'success')
+            return redirect(url_for('view_cars'))
+        except Exception as e:
+            flash(f'Error: {str(e)}', 'error')
+
         car_repo.create_car(make, model, year, price, description, agent_id, seller_id)
         flash('Car listing created successfully!')
         return redirect(url_for('view_cars'))
 
-    return render_template('create_car.html')
+    return render_template('create_car.html', sellers=sellers)
 
-# Update a used car listing
 @app.route('/cars/<int:car_id>/edit', methods=('GET', 'POST'))
 @agent_required
 def update_car(car_id):
     car = car_repo.get_car_by_id(car_id)
+    sellers = user_repo.get_active_sellers()  # Fetch sellers
 
     if request.method == 'POST':
         make = request.form['make']
@@ -276,12 +296,17 @@ def update_car(car_id):
         year = request.form['year']
         price = request.form['price']
         description = request.form['description']
+        seller_id = request.form['seller_id']
 
-        car_repo.update_car(car_id, make, model, year, price, description)
-        flash('Car listing updated successfully!')
-        return redirect(url_for('view_cars'))
+        try:
+            car_repo.update_car(car_id, make, model, year, price, description, seller_id)
+            flash('Car listing updated successfully!', 'success')
+            return redirect(url_for('view_cars'))
+        except Exception as e:
+            flash(f'Error: {str(e)}', 'error')
 
-    return render_template('edit_car.html', car=car)
+    return render_template('edit_car.html', car=car, sellers=sellers)
+
 
 # Delete a used car listing
 @app.route('/cars/<int:car_id>/delete', methods=('POST',))
@@ -397,7 +422,7 @@ def loan_calculator():
             pow(1 + interest_rate, loan_term) - 1
         )
 
-        flash(f'Estimated Monthly Payment: ${monthly_payment:.2f}')
+        # flash(f'Estimated Monthly Payment: ${monthly_payment:.2f}')
 
     return render_template(
         'loan_calculator.html', 

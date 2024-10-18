@@ -24,7 +24,15 @@ class UserAccountRepository(BaseRepository):
     def get_account_by_email(self, email):
         query = 'SELECT * FROM user_accounts WHERE email = ?'
         return self.fetch_one(query, (email,))
-
+    
+    def get_active_sellers(self):
+        query = '''
+            SELECT ua.id, ua.name 
+            FROM user_accounts ua
+            INNER JOIN user_profiles up ON ua.profile_id = up.profile_id
+            WHERE up.role = 'seller' AND ua.status = 'active'
+        '''
+        return self.fetch_all(query)
     def create_account(self, id, name, password, email, profile_id, status):
         query = '''
             INSERT INTO user_accounts (id, name, password, email, profile_id, status) 
@@ -32,13 +40,15 @@ class UserAccountRepository(BaseRepository):
         '''
         self.execute_query(query, (id, name, password, email, profile_id, status))
 
-    def update_account(self, id, name, password, email, profile_id, status):
+    def update_account(self, id, name, password, email, profile_id, status, old_id):
         query = '''
             UPDATE user_accounts 
-            SET name = ?, password = ?, email = ?, profile_id = ?, status = ? 
+            SET id = ?, name = ?, password = ?, email = ?, profile_id = ?, status = ?
             WHERE id = ?
         '''
-        self.execute_query(query, (name, password, email, profile_id, status, id))
+        self.execute_query(query, (id, name, password, email, profile_id, status, old_id))
+
+
 
     def suspend_account(self, user_id):
         query = 'UPDATE user_accounts SET status = "suspended" WHERE id = ?'
