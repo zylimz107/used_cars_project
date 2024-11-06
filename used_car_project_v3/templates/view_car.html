@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ car['make'] }} {{ car['model'] }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 40px;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            margin-right: 10px;
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ car['make'] }} {{ car['model'] }}</h1>
+    <p><strong>Year:</strong> {{ car['year'] }}</p>
+    <p><strong>Price:</strong> ${{ car['price'] }}</p>
+    <p><strong>Seller:</strong> {{ car['seller_id'] }}</p>
+    <p><strong>Agent:</strong> {{ car['agent_id'] }}</p>
+    <p><strong>Description:</strong> {{ car['description'] }}</p>
+    <p><strong>Viewed:</strong> {{ car['view_count'] }} times</p>
+
+    <a href="{{ url_for('save_listing', car_id=car['car_id']) }}">Save to Shortlist</a>
+    <a href="{{ url_for('search_listings') }}">Back to All Listings</a>
+</body>
+</html>

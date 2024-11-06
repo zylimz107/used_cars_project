@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        select {
+            width: 97%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="number"] {
+            width: 97%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .navigation {
+            margin-top: 20px;
+        }
+        .navigation a {
+            text-decoration: none;
+            color: #007BFF;
+            margin-right: 10px;
+        }
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+                <div class="{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% endwith %}
+    <h1>Loan Calculator</h1>
+
+    <form method="POST">
+        <label for="car_id">Select a Car:</label>
+        <select id="car_id" name="car_id" required>
+            <option value="">-- Select a Car --</option>
+            {% for car in cars %}
+                <option value="{{ car['car_id'] }}">
+                    {{ car['make'] }} {{ car['model'] }} ({{ car['year'] }}) - ${{ car['price'] }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="interest_rate">Interest Rate (% per year):</label>
+        <input type="number" name="interest_rate" step="0.01" min="0" required placeholder="e.g., 3.5">
+
+        <label for="loan_term">Loan Term (Years):</label>
+        <input type="number" name="loan_term" min="1" required placeholder="e.g., 5">
+
+        <button type="submit">Calculate</button>
+        <button type="reset">Clear</button>
+    </form>
+
+    {% if monthly_payment is not none %}
+        <div class="result">
+            <h2>Estimated Monthly Payment: ${{ '%.2f' | format(monthly_payment) }}</h2>
+        </div>
+    {% endif %}
+
+    <div class="navigation">
+        <a href="{{ url_for('search_listings') }}">Back to All Listings</a>
+        <a href="{{ url_for('view_shortlist') }}">View Shortlist</a>
+    </div>
+</body>
+</html>
