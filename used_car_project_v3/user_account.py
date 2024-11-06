@@ -1,5 +1,4 @@
 from base_repository import BaseRepository
-from user_profile import UserProfile
 
 class UserAccount(BaseRepository):
     def get_all_accounts(self):
