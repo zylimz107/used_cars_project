@@ -24,3 +24,5 @@ review > review controller > boundary
 boundary: app.py + html
 
 some controllers are using 2 entities, like user account controller.
+
+default user admin username = admin1  password = admin123
