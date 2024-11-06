@@ -10,10 +10,15 @@ used_Car_project_v3 contains the latest updated codes
 brief overview of bce relationship:
 
 user account > user account controller > boundary
+
 user profile > user profile controller > boundary
+
 used car > used car controller > boundary
+
 buyer > buyer controller > boundary
+
 seller > seller controller > boundary
+
 review > review controller > boundary
 
 boundary: app.py + html
