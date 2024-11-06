@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Agents</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 500px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #28a745;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #e2e6ea;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        .return-link {
+            margin-top: 15px;
+            background-color: #6c757d;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 5px;
+        }
+
+        .return-link:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Available Used Car Agents</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agent in agents %}
+                    <tr>
+                        <td>{{ agent.name }}</td>
+                        <td>{{ agent.id }}</td>
+                        <td><a href="{{ url_for('view_reviews', agent_id=agent.id) }}">View Reviews</a></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3">No agents available.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Link to return to the relevant listing page -->
+        {% if session['user']['role'] == 'buyer' %}
+            <a href="{{ url_for('search_listings') }}" class="return-link">Return to Buyer Listings</a>
+        {% elif session['user']['role'] == 'seller' %}
+            <a href="{{ url_for('manage_seller_listings') }}" class="return-link">Return to Seller Listings</a>
+        {% elif session['user']['role'] == 'agent' %}
+            <a href="{{ url_for('view_cars') }}" class="return-link">Return to Your Cars</a>
+        {% endif %}
+    </div>
+</body>
+</html>
