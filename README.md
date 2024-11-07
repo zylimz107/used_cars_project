@@ -5,24 +5,22 @@ delete used_cars.db and run init_db.py to create database if you do not wish to 
 
 run app.py to start the website.
 
-used_Car_project_v3 contains the latest updated codes
+**used_Car_project_v4** contains the latest updated codes and should be the last
 
 brief overview of bce relationship:
 
-user account > user account controller > boundary
+user account > user account controllers > boundary
 
-user profile > user profile controller > boundary
+user profile > user profile controllers > boundary
 
-used car > used car controller > boundary
+used car > used car controllers > boundary
 
-buyer > buyer controller > boundary
+buyer > buyer controllers > boundary
 
-seller > seller controller > boundary
+seller > seller controllers > boundary
 
-review > review controller > boundary
+review > review controllers > boundary
 
 boundary: app.py + html
-
-some controllers are using 2 entities, like user account controller.
 
 default user admin username = admin1  password = admin123
