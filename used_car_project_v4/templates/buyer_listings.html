@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Cars</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 40px;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .navigation {
+            margin-bottom: 20px;
+        }
+        .navigation a, .button {
+            margin-right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .navigation a:hover, .button:hover {
+            background-color: #45a049;
+        }
+        form {
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 22px);
+            margin-right: 10px;
+        }
+        button {
+            background-color: #2c82b0;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4486ae;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .refresh {
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <h1>Available Cars</h1>
+
+    <div class="navigation">
+        <a href="{{ url_for('view_shortlist') }}" class="button">View Shortlist</a>
+        <a href="{{ url_for('submit_buyer_review') }}" class="button">Submit Review</a>
+        <a href="{{ url_for('loan_calculator') }}" class="button">Use Loan Calculator</a>
+        <a href="/logout" class="button">Log Out</a>
+    </div>
+
+    <form method="POST">
+        <input type="text" name="search_term" placeholder="Search cars...">
+        <button type="submit">Search</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Price</th>
+            <th>Agent</th>
+            <th>Seller</th>
+            <th>Actions</th>
+        </tr>
+        {% for car in cars %}
+            <tr>
+                <td>{{ car['make'] }}</td>
+                <td>{{ car['model'] }}</td>
+                <td>{{ car['year'] }}</td>
+                <td>${{ car['price'] }}</td>
+                <td>{{ car['agent_id'] }}</td>
+                <td>{{ car['seller_id'] }}</td>
+                <td>
+                    <a href="{{ url_for('view_listing', car_id=car['car_id']) }}" class="button">View</a>
+                    <a href="{{ url_for('save_listing', car_id=car['car_id']) }}" class="button">Save</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

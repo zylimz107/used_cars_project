@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Car Listings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 40px;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        a {
+            display: inline-block;
+            margin: 10px 0;
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #dee2e6;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <h1>Your Car Listings</h1>
+
+    <a href="/logout">Log Out</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Price</th>
+                <th>Agent</th>
+                <th>Seller</th>
+                <th>Shortlisted by</th>
+                <th>Viewed</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+                <tr>
+                    <td>{{ car['make'] }}</td>
+                    <td>{{ car['model'] }}</td>
+                    <td>{{ car['year'] }}</td>
+                    <td>${{ car['price'] }}</td>
+                    <td>{{ car['agent_id'] }}</td>
+                    <td>{{ car['seller_id'] }}</td>
+                    <td id="shortlist-count-{{ car['car_id'] }}"></td>
+                    <td id="view-count-{{ car['car_id'] }}"></td>
+                    <td>
+                        <button class="view-count-btn" data-car-id="{{ car['car_id'] }}">View Count</button>
+                        <button class="shortlist-count-btn" data-car-id="{{ car['car_id'] }}">Shortlist Count</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('submit_seller_review') }}">Submit a review</a>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Get View Count
+            $('.view-count-btn').click(function() {
+                var carId = $(this).data('car-id');
+                $.get('/car/' + carId + '/view_count', function(data) {
+                    $('#view-count-' + carId).text(data.view_count + ' times');
+                });
+            });
+
+            // Get Shortlist Count
+            $('.shortlist-count-btn').click(function() {
+                var carId = $(this).data('car-id');
+                $.get('/car/' + carId + '/shortlist_count', function(data) {
+                    $('#shortlist-count-' + carId).text(data.shortlist_count + ' potential buyers');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

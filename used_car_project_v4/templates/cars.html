@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used Car Listings</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 75%;
+            max-width: 1200px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        form {
+            margin: 20px 0;
+        }
+
+        input[type="text"] {
+            width: 50%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 5px;
+        }
+
+        .search_button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search_button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        td {
+            background-color: #f2f2f2;
+        }
+
+        .actions a {
+            margin-right: 10px;
+            background-color: #007bff;
+        }
+
+        .actions a:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-btn {
+            background-color: #c04765;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background-color: #c8234f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+            <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+        <h1>Used Car Listings</h1>
+
+        <a href="{{ url_for('create_car') }}">Create New Listing</a>
+        <a href="{{ url_for('view_reviews') }}">View my reviews</a>
+        <a href="/logout">Log Out</a>
+
+        <form action="{{ url_for('search_cars') }}" method="post">
+            <input type="text" name="search_term" placeholder="Search cars...">
+            <input type="submit" class="search_button" value="Search">
+        </form>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Agent</th>
+                <th>Seller</th>
+                <th>Actions</th>
+            </tr>
+            {% for car in cars %}
+            <tr>
+                <td>{{ car.car_id }}</td>
+                <td>{{ car.make }}</td>
+                <td>{{ car.model }}</td>
+                <td>{{ car.year }}</td>
+                <td>${{ "%.2f" | format(car.price) }}</td>
+                <td>{{ car.description }}</td>
+                <td>{{ car.agent_id }}</td>
+                <td>{{ car.seller_id }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('update_car', car_id=car.car_id) }}">Edit</a>
+                    <form action="{{ url_for('delete_car', car_id=car.car_id) }}" method="post" style="display:inline;">
+                        <input type="submit" class="delete-btn" value="Delete">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
