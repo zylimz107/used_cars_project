@@ -7,7 +7,7 @@ class ViewAccountController:
 
     def view_accounts(self):
         # Fetch and display all user accounts
-       return self.user_account_entity.get_all_accounts()
+       return self.user_account_entity.view_accounts()
 
 class CreateAccountController:
     def __init__(self):

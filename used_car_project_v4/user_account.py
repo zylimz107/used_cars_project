@@ -1,7 +1,7 @@
 from base_repository import BaseRepository
 
 class UserAccount(BaseRepository):
-    def get_all_accounts(self):
+    def view_accounts(self):
         query = '''
             SELECT ua.*, up.role 
             FROM user_accounts ua 

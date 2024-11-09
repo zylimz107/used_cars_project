@@ -1,7 +1,7 @@
 from base_repository import BaseRepository
 
 class UserProfile(BaseRepository):
-    def get_all_profiles(self):
+    def view_profiles(self):
         query = 'SELECT * FROM user_profiles'
         return self.fetch_all(query)
 
@@ -46,7 +46,3 @@ class UserProfile(BaseRepository):
     def search_profiles(self, search_term):
         query = 'SELECT * FROM user_profiles WHERE role LIKE ?'
         return self.fetch_all(query, (f'%{search_term}%',))
-    
-    def get_active_profiles(self):
-        query = 'SELECT * FROM user_profiles WHERE status = "active"'
-        return self.fetch_all(query)

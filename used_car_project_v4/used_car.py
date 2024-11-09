@@ -1,7 +1,7 @@
 from base_repository import BaseRepository
 
 class UsedCar(BaseRepository):
-    def get_all_cars(self):
+    def view_cars(self):
         query = 'SELECT * FROM used_cars'
         return self.fetch_all(query)
 

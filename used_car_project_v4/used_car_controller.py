@@ -7,7 +7,7 @@ class ViewCarController:
 
     def view_cars(self):
         # Retrieve and display all used cars
-        return self.used_car_entity.get_all_cars()
+        return self.used_car_entity.view_cars()
 
 class CreateCarController:
     def __init__(self):

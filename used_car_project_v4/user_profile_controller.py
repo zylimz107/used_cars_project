@@ -7,7 +7,7 @@ class ViewProfileController:
 
     def view_profiles(self):
         # Retrieve all user profiles from the entity and display them in the 'profiles.html' template
-        return self.user_profile_entity.get_all_profiles()
+        return self.user_profile_entity.view_profiles()
     
 class CreateProfileController:
     def __init__(self):
