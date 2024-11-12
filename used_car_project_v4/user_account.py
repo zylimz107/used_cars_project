@@ -70,9 +70,9 @@ class UserAccount(BaseRepository):
             SELECT ua.*, up.role 
             FROM user_accounts ua
             LEFT JOIN user_profiles up ON ua.profile_id = up.profile_id
-            WHERE ua.id LIKE ?
+            WHERE ua.id LIKE ? OR ua.name LIKE? OR up.role LIKE?
         '''
-        return self.fetch_all(query, (f'%{search_term}%',))
+        return self.fetch_all(query, (f'%{search_term}%',f'%{search_term}%',f'%{search_term}%'))
 
     def login_user(self, user_id, password):
         query = '''

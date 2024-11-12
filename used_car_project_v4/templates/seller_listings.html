@@ -10,7 +10,7 @@
             background-color: #f0f0f0;
             margin: 40px;
             padding: 20px;
-            max-width: 800px;
+            max-width: 1000px;
             margin: auto;
             background-color: white;
             border-radius: 8px;
@@ -90,7 +90,8 @@
                 <th>Seller</th>
                 <th>Shortlisted by</th>
                 <th>Viewed</th>
-                <th>Actions</th>
+                <th>View Count</th>
+                <th>Shortlist Count</th>
             </tr>
         </thead>
         <tbody>
@@ -106,8 +107,8 @@
                     <td id="view-count-{{ car['car_id'] }}"></td>
                     <td>
                         <button class="view-count-btn" data-car-id="{{ car['car_id'] }}">View Count</button>
-                        <button class="shortlist-count-btn" data-car-id="{{ car['car_id'] }}">Shortlist Count</button>
                     </td>
+                    <td><button class="shortlist-count-btn" data-car-id="{{ car['car_id'] }}">Shortlist Count</button></td>
                 </tr>
             {% endfor %}
         </tbody>

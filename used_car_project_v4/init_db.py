@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS shortlist (
     buyer_id TEXT,
     car_id INTEGER,
     FOREIGN KEY (buyer_id) REFERENCES user_accounts (id),
-    FOREIGN KEY (car_id) REFERENCES cars (id),
+    FOREIGN KEY (car_id) REFERENCES used_cars (id),
     UNIQUE (buyer_id, car_id)  -- Composite unique constraint
 )
 ''')
@@ -76,12 +76,37 @@ cursor.executemany(
     ]
 )
 
+# Insert admin user
 cursor.execute('''
-        INSERT INTO user_accounts (id, name, password, email, profile_id, status)
-        VALUES (?, ?, ?, ?, 
-                (SELECT profile_id FROM user_profiles WHERE role = 'admin' LIMIT 1), 
-                ?)
-    ''', ('admin1', 'Admin User', 'admin123', 'admin@example.com', 'active'))
+    INSERT INTO user_accounts (id, name, password, email, profile_id, status)
+    VALUES (?, ?, ?, ?, 
+            (SELECT profile_id FROM user_profiles WHERE role = 'admin' LIMIT 1), 
+            ?)
+''', ('admin1', 'Admin User', 'admin123', 'admin@example.com', 'active'))
+
+# Insert buyer user
+cursor.execute('''
+    INSERT INTO user_accounts (id, name, password, email, profile_id, status)
+    VALUES (?, ?, ?, ?, 
+            (SELECT profile_id FROM user_profiles WHERE role = 'buyer' LIMIT 1), 
+            ?)
+''', ('buyer', 'Buyer User', 'buyer', 'buyer@example.com', 'active'))
+
+# Insert seller user
+cursor.execute('''
+    INSERT INTO user_accounts (id, name, password, email, profile_id, status)
+    VALUES (?, ?, ?, ?, 
+            (SELECT profile_id FROM user_profiles WHERE role = 'seller' LIMIT 1), 
+            ?)
+''', ('seller', 'Seller User', 'seller', 'seller@example.com', 'active'))
+
+# Insert agent user
+cursor.execute('''
+    INSERT INTO user_accounts (id, name, password, email, profile_id, status)
+    VALUES (?, ?, ?, ?, 
+            (SELECT profile_id FROM user_profiles WHERE role = 'agent' LIMIT 1), 
+            ?)
+''', ('agent', 'Agent User', 'agent', 'agent@example.com', 'active'))
 
 # Commit and close
 connection.commit()

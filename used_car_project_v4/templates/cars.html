@@ -146,7 +146,8 @@
                 <th>Description</th>
                 <th>Agent</th>
                 <th>Seller</th>
-                <th>Actions</th>
+                <th>Update</th>
+                <th>Delete</th>
             </tr>
             {% for car in cars %}
             <tr>
@@ -159,11 +160,13 @@
                 <td>{{ car.agent_id }}</td>
                 <td>{{ car.seller_id }}</td>
                 <td class="actions">
-                    <a href="{{ url_for('update_car', car_id=car.car_id) }}">Edit</a>
-                    <form action="{{ url_for('delete_car', car_id=car.car_id) }}" method="post" style="display:inline;">
-                        <input type="submit" class="delete-btn" value="Delete">
-                    </form>
+                    <a href="{{ url_for('update_car', car_id=car.car_id) }}">Update</a>
                 </td>
+                <td>                    
+                    <form action="{{ url_for('delete_car', car_id=car.car_id) }}" method="post" style="display:inline;">
+                    <input type="submit" class="delete-btn" value="Delete">
+                </form>
+            </td>
             </tr>
             {% endfor %}
         </table>

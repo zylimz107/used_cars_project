@@ -10,7 +10,7 @@
             background-color: #f9f9f9;
             margin: 40px;
             padding: 20px;
-            max-width: 800px;
+            max-width: 1000px;
             margin: auto;
             background-color: white;
             border-radius: 8px;
@@ -112,7 +112,8 @@
             <th>Price</th>
             <th>Agent</th>
             <th>Seller</th>
-            <th>Actions</th>
+            <th>View</th>
+            <th>Save</th>
         </tr>
         {% for car in cars %}
             <tr>
@@ -124,8 +125,8 @@
                 <td>{{ car['seller_id'] }}</td>
                 <td>
                     <a href="{{ url_for('view_listing', car_id=car['car_id']) }}" class="button">View</a>
-                    <a href="{{ url_for('save_listing', car_id=car['car_id']) }}" class="button">Save</a>
                 </td>
+                <td><a href="{{ url_for('save_listing', car_id=car['car_id']) }}" class="button">Save</a></td>
             </tr>
         {% endfor %}
     </table>
