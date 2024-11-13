@@ -24,3 +24,5 @@ review > review controllers > boundary
 boundary: app.py + html
 
 default user admin username = admin1  password = admin123
+
+if running test_app.py , use: python -m pytest test_app.py or pytest test_app.py
