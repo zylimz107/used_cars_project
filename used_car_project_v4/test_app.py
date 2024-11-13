@@ -1,6 +1,5 @@
 import pytest
-from flask import Flask, session
-from boundary import app, view_reviews
+from boundary import app
 import sqlite3
 
 # Connect to the database
