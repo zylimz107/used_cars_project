@@ -48,6 +48,9 @@ for _ in range(100):
         random.choice(agent_ids)  # agent_id
     ))
 
+buyer_ids = [row[0] for row in cursor.execute("SELECT id FROM user_accounts WHERE profile_id = (SELECT profile_id FROM user_profiles WHERE role = 'buyer')").fetchall()]
+
+
 # Generate 100 reviews with random ratings and text for agents
 for _ in range(100):
     cursor.execute('''
