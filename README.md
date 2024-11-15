@@ -1,28 +1,37 @@
-# csit314
-used_car
+#Prerequisites
 
-delete used_cars.db and run init_db.py to create database if you do not wish to use mine.
+Ensure you have Python and Flask installed.
 
-run app.py to start the website.
+#Database Setup
 
-**used_Car_project_v4** contains the latest updated codes and should be the last
+Reset Database: Delete the used_cars.db file if you want to start with a fresh database.
 
-brief overview of bce relationship:
+Initialize Database: Run init_db.py to create a new database.
 
-user account > user account controllers > boundary
+#Starting the Application
 
-user profile > user profile controllers > boundary
+Run boundary.py to start the website on local host.
 
-used car > used car controllers > boundary
 
-buyer > buyer controllers > boundary
+Default Admin Credentials
 
-seller > seller controllers > boundary
+Username: admin1
+Password: admin123
 
-review > review controllers > boundary
+#Testing
 
-boundary: app.py + html
+Install Testing Packages: For testing, install pytest and Flask-Testing.
 
-default user admin username = admin1  password = admin123
+pip install pytest Flask-Testing
 
-if running test_app.py , use: python -m pytest test_app.py or pytest test_app.py
+Run Test script: Execute test_app.py using one of the following commands:
+
+python -m pytest test_app.py
+
+or
+
+pytest test_app.py
+
+#For populating the database with 100+ records:
+
+run init_testdb.py
