@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Reviews</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .review {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .review:last-child {
+            border-bottom: none;
+        }
+        .rating {
+            color: #f39c12;
+        }
+        .reviewer {
+            font-style: italic;
+            color: #555;
+        }
+        a{          
+            margin-right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;}
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('view_cars') }}">Back to All Listings</a>  
+    <h1>Reviews for Agent {{ agent_id }}</h1>
+
+    {% if reviews %}
+        {% for review in reviews %}
+            <div class="review">
+                <p class="rating">Rating: {{ review['rating'] }} / 5</p>
+                <p>{{ review['review'] }}</p>
+                <p class="reviewer">- {{ review['reviewer'] }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No reviews for this agent yet.</p>
+    {% endif %}
+</body>
+</html>
