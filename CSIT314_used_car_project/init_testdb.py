@@ -48,18 +48,6 @@ for _ in range(100):
         random.choice(agent_ids)  # agent_id
     ))
 
-# Generate 100 shortlist entries for buyers and cars
-buyer_ids = [row[0] for row in cursor.execute("SELECT id FROM user_accounts WHERE profile_id = (SELECT profile_id FROM user_profiles WHERE role = 'buyer')").fetchall()]
-car_ids = [row[0] for row in cursor.execute("SELECT car_id FROM used_cars").fetchall()]
-for _ in range(100):
-    cursor.execute('''
-        INSERT OR IGNORE INTO shortlist (buyer_id, car_id)
-        VALUES (?, ?)
-    ''', (
-        random.choice(buyer_ids),  # buyer_id
-        random.choice(car_ids)  # car_id
-    ))
-
 # Generate 100 reviews with random ratings and text for agents
 for _ in range(100):
     cursor.execute('''
